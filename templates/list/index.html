@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+  <div class="row mx-auto border rounded">
+    <form class="needs-validation" action="{% url 'index' %}" method="post" onsubmit="return validate();">
+      {% csrf_token %}
+      <div class="row">
+        <h2 class="display-5" style="text-align: center;"><u>Add Task</u></h2>
+      </div>
+
+      <div class="row mx-auto">
+        <div class="mb-3">
+          <label for="t_name" class="h5">Task-Name</label>
+          <input type="text" class="form-control" id="t_name" name="t_name">
+          <small><label for="t_name_error" id="t_name_error" class="text-danger"></label></small>
+        </div>
+        <div class="mb-3">
+          <label for="t_details" class="form-label h5">Task-Description</label>
+          <textarea class="form-control" id="t_details" name="t_details" rows="4"></textarea>
+          <small><label for="t_details_error" id="t_details_error" class="text-danger"></label></small>
+        </div>
+      </div>
+
+      <div class="row d-flex justify-content-end">
+        <div class="col-auto">
+          <input type="submit" value="Add-Task" class="btn btn-primary mb-3">
+        </div>
+      </div>
+    </form>
+  </div>
+
+  <div class="container">
+    <div class="row mt-4">
+      <h2 class="display-5" style="text-align: center;"><u>All Tasks</u></h2>
+    </div>
+    <div class="accordion" id="accordionExample">
+      {% for t in task %}
+        <div class="accordion-item">
+          {% if t.task_status %}
+          <h2 class="accordion-header" id="heading{{ t.id }}"><button class="accordion-button collapsed" style="background-color: #81C784;" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{ t.id }}" aria-expanded="true" aria-controls="collapse{{ t.id }}"><strong>{{ t.task_name }}</strong></button></h2>
+          {% else %}
+          <h2 class="accordion-header" id="heading{{ t.id }}"><button class="accordion-button collapsed"  type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{ t.id }}" aria-expanded="true" aria-controls="collapse{{ t.id }}"><strong>{{ t.task_name }}</strong></button></h2>
+          {% endif %}
+          <div id="collapse{{ t.id }}" class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+            <div class="accordion-body" style="background-color: #80DEEA;">
+              {{ t.task_description }}
+              {% comment %} <strong>{{ t.task_status }}</strong> {% endcomment %}
+              <div class="row d-flex justify-content-end">
+                <div class="col-auto mx-2">
+                  {% if t.task_status %}
+                    <a href=" {% url 'up_status' t.id %} " class="btn btn-warning mb-1">Mark as Not Done</a>
+                  {% else %}
+                    <a href=" {% url 'up_status' t.id %} " class="btn btn-success mb-1">Task is Completed</a>
+                  {% endif %}
+                </div>
+                <div class="col-auto mx-2">
+                  <a href="{% url 'del_task' t.id %}" class="btn btn-danger">Delete Task</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+{% endblock %}
+
+{% block js %}
+  <script src="{% static 'js/add-task-validator.js' %}"></script>
+{% endblock js %}

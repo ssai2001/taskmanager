@@ -1,0 +1,61 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Link bootstrap -->
+    <link rel="stylesheet" href="{% static 'bs5/css/bootstrap.min.css' %}">
+    {% block css %}
+    
+    {% endblock css %}
+    <title>Index-page</title>
+    <style>
+        .sub_div{
+            position: absolute;
+            bottom: 0px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container my-2">
+        <header>
+            <div class="row mx-3">
+                <div class="col">
+                    <h1 class="text-danger">Task-Manager.io</h1>
+                </div>
+                <div class="col" style="text-align: right;">
+                    {% if user.is_authenticated %}
+                        <h5 class="text-primary">
+                            <a href="{% url 'logout' %}">Log-out</a>
+                        </h5>
+                    {% else %}
+                        <h5 class="text-primary">
+                            <a href="{% url 'signup' %}">sign-up</a>
+                        </h5>
+                    {% endif %}
+
+                </div>
+            </div>
+        </header>
+        {% block content %}
+    
+        {% endblock content %}
+        {% comment %} <footer class="my-5 mx-2">
+            <div class="bg-dark row">
+                <div class="col">
+                    <h3 class="text-white">by P.Sai Mohan</h3>
+                </div>
+                <div class="col align-items-center" style="text-align: right;">
+                    <button type="button" class="btn btn-light">Last Updated: Feb-2023</button>
+                </div>
+            </div>
+        </footer> {% endcomment %}
+    </div>
+</body>
+    <script src="{% static 'bs5/js/bootstrap.bundle.js' %}"></script>
+    {% block js %}
+    
+    {% endblock js %}
+</html>
