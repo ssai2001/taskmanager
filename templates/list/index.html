@@ -32,7 +32,11 @@
 
   <div class="container">
     <div class="row mt-4">
-      <h2 class="display-5" style="text-align: center;"><u>All Tasks</u></h2>
+      {% if task %}  
+        <h2 class="display-5" style="text-align: center;"><u>All Tasks</u></h2>
+      {% else %}
+        <h1 style="text-align: center;">Please Add Some Tasks</h1>
+      {% endif %}
     </div>
     <div class="accordion" id="accordionExample">
       {% for t in task %}

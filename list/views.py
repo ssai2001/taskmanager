@@ -1,9 +1,11 @@
 from django.shortcuts import render,redirect
 from django.http import HttpResponse
 from list.models import Task
+from django.contrib.auth.decorators import login_required
 
 # Create your views here.
 
+@login_required(login_url='signin')
 def index(request):
     if request.method == "POST":
         task_name = request.POST.get('t_name')
@@ -36,6 +38,7 @@ def index(request):
     #     print(t.task_name)
     return render(request,'list/index.html',context)
 
+@login_required(login_url='signin')
 def update_status(request,id):
     task = Task.objects.get(id=id)
     if(task.task_status):
@@ -44,6 +47,7 @@ def update_status(request,id):
         Task.objects.filter(id=id).update(task_status=True)
     return redirect('index')
 
+@login_required(login_url='signin')
 def delete_task(request,id):
     Task.objects.get(id=id).delete()
     return redirect('index')
